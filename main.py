@@ -1,10 +1,6 @@
-# ---------------------------- PASSWORD GENERATOR ------------------------------- #
-
-# ---------------------------- SAVE PASSWORD ------------------------------- #
-
-# ---------------------------- UI SETUP ------------------------------- #
 import tkinter
 from tkinter import messagebox
+import random
 
 LABEL_FONT = ("Arial", 12)
 BUTTON_FONT = ("Arial", 10)
@@ -12,6 +8,60 @@ ENTRY_FONT = ("Arial", 10)
 PASSWORDFILE_PATH = "./passwords.txt"
 PASSWORDFILE_SEPARATOR = " | "
 
+
+# ---------------------------- PASSWORD GENERATOR ------------------------------- #
+def generate_password():
+    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
+               'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+               'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
+
+    nr_letters = random.randint(8, 10)
+    nr_symbols = random.randint(2, 4)
+    nr_numbers = random.randint(2, 4)
+
+    generated_password_list = []
+
+    for char in range(nr_letters):
+        generated_password_list.append(random.choice(letters))
+    for char in range(nr_symbols):
+        generated_password_list.append(random.choice(symbols))
+    for char in range(nr_numbers):
+        generated_password_list.append(random.choice(numbers))
+
+    random.shuffle(generated_password_list)
+    generated_password = "".join(generated_password_list)
+    password_entry.delete(0, tkinter.END)
+    password_entry.insert(0, generated_password)
+
+
+# ---------------------------- SAVE PASSWORD ------------------------------- #
+def addpassword_button_click():
+    website = website_entry.get()
+    username = username_entry.get()
+    password = password_entry.get()
+    # Make sure no fields are empty
+    if website == "" or username == "" or password == "":
+        messagebox.showinfo(title="Oops", message="Please don't leave any fields empty!")
+        if website == "":
+            website_entry.focus()
+        elif username == "":
+            username_entry.focus()
+        else:
+            password_entry.focus()
+        return
+    # Save the password
+    with open(PASSWORDFILE_PATH, mode="a") as file:
+        file.write(f"{website} | {username} | {password}\n")
+    # Clear userinput interface
+    website_entry.delete(0, tkinter.END)
+    password_entry.delete(0, tkinter.END)
+    website_entry.focus()
+    return
+
+
+# ---------------------------- UI SETUP ------------------------------- #
 # Create and open GUI window
 app_window = tkinter.Tk()
 app_window.title("Password Manager")
@@ -46,39 +96,10 @@ password_entry = tkinter.Entry(width=28, font=ENTRY_FONT)
 password_entry.grid(row=4, column=2, sticky="W", pady=2)
 
 # "Generate Password" button
-generatepassword_button = tkinter.Button(text="Generate Password", font=BUTTON_FONT)
+generatepassword_button = tkinter.Button(text="Generate Password", font=BUTTON_FONT, command=generate_password)
 generatepassword_button.grid(row=4, column=3)
 
-
 # "Add" button
-def addpassword_button_click():
-    website = website_entry.get()
-    username = username_entry.get()
-    password = password_entry.get()
-    # Make sure no fields are empty
-    if website == "" or username == "" or password == "":
-        messagebox.showinfo(title="Oops", message="Please don't leave any fields empty!")
-        if website == "":
-            website_entry.focus()
-        elif username == "":
-            username_entry.focus()
-        else:
-            password_entry.focus()
-        return
-    # Ask user to confirm their entry
-    is_ok = messagebox.askokcancel(title=website, message=f" username: {username}\n pw: {password}\n\n Save this info?")
-    if not is_ok:
-        return
-    # Save the password
-    with open(PASSWORDFILE_PATH, mode="a") as file:
-        file.write(f"{website} | {username} | {password}\n")
-    # Clear userinput interface
-    website_entry.delete(0, tkinter.END)
-    password_entry.delete(0, tkinter.END)
-    website_entry.focus()
-    return
-
-
 addpassword_button = tkinter.Button(text="Add", width=36, font=BUTTON_FONT, command=addpassword_button_click)
 addpassword_button.grid(row=5, column=2, columnspan=2, sticky="W", pady=20)
 
