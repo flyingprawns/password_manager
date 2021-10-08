@@ -8,6 +8,8 @@ import tkinter
 LABEL_FONT = ("Arial", 12)
 BUTTON_FONT = ("Arial", 10)
 ENTRY_FONT = ("Arial", 10)
+PASSWORDFILE_PATH = "./passwords.txt"
+PASSWORDFILE_SEPARATOR = " | "
 
 # Create and open GUI window
 app_window = tkinter.Tk()
@@ -46,8 +48,23 @@ password_entry.grid(row=4, column=2, sticky="W", pady=2)
 generatepassword_button = tkinter.Button(text="Generate Password", font=BUTTON_FONT)
 generatepassword_button.grid(row=4, column=3)
 
+
 # "Add" button
-addpassword_button = tkinter.Button(text="Add", width=36, font=BUTTON_FONT)
+def addpassword_button_click():
+    save_password_to(PASSWORDFILE_PATH)
+
+
+def save_password_to(file_path):
+    with open(file_path, mode="a") as file:
+        file.write(website_entry.get())
+        file.write(PASSWORDFILE_SEPARATOR)
+        file.write(username_entry.get())
+        file.write(PASSWORDFILE_SEPARATOR)
+        file.write(password_entry.get())
+        file.write("\n")
+
+
+addpassword_button = tkinter.Button(text="Add", width=36, font=BUTTON_FONT, command=addpassword_button_click)
 addpassword_button.grid(row=5, column=2, columnspan=2, sticky="W", pady=20)
 
 # Exit GUI window
