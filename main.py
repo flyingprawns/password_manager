@@ -52,6 +52,10 @@ generatepassword_button.grid(row=4, column=3)
 # "Add" button
 def addpassword_button_click():
     save_password_to(PASSWORDFILE_PATH)
+    # Clear userinput interface
+    website_entry.delete(0, tkinter.END)
+    password_entry.delete(0, tkinter.END)
+    website_entry.focus()
 
 
 def save_password_to(file_path):
