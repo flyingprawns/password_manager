@@ -6,6 +6,7 @@
 import tkinter
 
 LABEL_FONT = ("Arial", 12)
+BUTTON_FONT = ("Arial", 10)
 
 # Create and open GUI window
 app_window = tkinter.Tk()
@@ -41,8 +42,12 @@ password_entry = tkinter.Entry(width=28)
 password_entry.grid(row=4, column=2, sticky="W")
 
 # "Generate Password" button
-generatepassword_button = tkinter.Button(text="Generate Password")
+generatepassword_button = tkinter.Button(text="Generate Password", font=BUTTON_FONT)
 generatepassword_button.grid(row=4, column=3)
+
+# "Add" button
+addpassword_button = tkinter.Button(text="Add", width=36, font=BUTTON_FONT)
+addpassword_button.grid(row=5, column=2, columnspan=2, sticky="W", pady=20)
 
 # Exit GUI window
 app_window.mainloop()
