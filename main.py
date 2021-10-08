@@ -52,24 +52,31 @@ generatepassword_button.grid(row=4, column=3)
 
 # "Add" button
 def addpassword_button_click():
+    website = website_entry.get()
+    username = username_entry.get()
+    password = password_entry.get()
+    # Make sure no fields are empty
+    if website == "" or username == "" or password == "":
+        messagebox.showinfo(title="Oops", message="Please don't leave any fields empty!")
+        if website == "":
+            website_entry.focus()
+        elif username == "":
+            username_entry.focus()
+        else:
+            password_entry.focus()
+        return
     # Ask user to confirm their entry
-    messagebox.showinfo(title="Title", message="message")
+    is_ok = messagebox.askokcancel(title=website, message=f" username: {username}\n pw: {password}\n\n Save this info?")
+    if not is_ok:
+        return
     # Save the password
-    save_password_to(PASSWORDFILE_PATH)
+    with open(PASSWORDFILE_PATH, mode="a") as file:
+        file.write(f"{website} | {username} | {password}\n")
     # Clear userinput interface
     website_entry.delete(0, tkinter.END)
     password_entry.delete(0, tkinter.END)
     website_entry.focus()
-
-
-def save_password_to(file_path):
-    with open(file_path, mode="a") as file:
-        file.write(website_entry.get())
-        file.write(PASSWORDFILE_SEPARATOR)
-        file.write(username_entry.get())
-        file.write(PASSWORDFILE_SEPARATOR)
-        file.write(password_entry.get())
-        file.write("\n")
+    return
 
 
 addpassword_button = tkinter.Button(text="Add", width=36, font=BUTTON_FONT, command=addpassword_button_click)
