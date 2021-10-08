@@ -4,6 +4,7 @@
 
 # ---------------------------- UI SETUP ------------------------------- #
 import tkinter
+from tkinter import messagebox
 
 LABEL_FONT = ("Arial", 12)
 BUTTON_FONT = ("Arial", 10)
@@ -51,6 +52,9 @@ generatepassword_button.grid(row=4, column=3)
 
 # "Add" button
 def addpassword_button_click():
+    # Ask user to confirm their entry
+    messagebox.showinfo(title="Title", message="message")
+    # Save the password
     save_password_to(PASSWORDFILE_PATH)
     # Clear userinput interface
     website_entry.delete(0, tkinter.END)
