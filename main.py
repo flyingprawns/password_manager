@@ -37,7 +37,7 @@ def generate_password():
 
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
-def addpassword_button_click():
+def save_password():
     # Retrieve user input
     website = website_entry.get()
     username = username_entry.get()
@@ -81,6 +81,27 @@ def addpassword_button_click():
     return
 
 
+# ------------------------ SEARCH FOR PASSWORD ------------------------ #
+def search_password():
+    # Try to read the data file. If data file does not exist, terminate the search
+    try:
+        with open(PASSWORDFILE_PATH, mode="r") as data_file:
+            data_dictionary = json.load(data_file)
+    except FileNotFoundError:
+        messagebox.showinfo(title="Search result", message=f"Password information not found.")
+        return
+    # If website info is not found in the data, terminate the search
+    website_name = website_entry.get()
+    if website_name not in data_dictionary.keys():
+        messagebox.showinfo(title="Search result", message=f"Password information not found.")
+        return
+    # Display popup box showing the data
+    username = data_dictionary[website_name]["username"]
+    password = data_dictionary[website_name]["password"]
+    messagebox.showinfo(title=f"{website_name} Info", message=f"Username: {username}\n Password: {password}")
+    return
+
+
 # ---------------------------- UI SETUP ------------------------------- #
 # Create and open GUI window
 app_window = tkinter.Tk()
@@ -120,11 +141,11 @@ generatepassword_button = tkinter.Button(text="Generate Password", font=BUTTON_F
 generatepassword_button.grid(row=4, column=3, sticky="W")
 
 # "Search for password" button
-searchpassword_button = tkinter.Button(text="Search for password", font=BUTTON_FONT)
+searchpassword_button = tkinter.Button(text="Search for password", font=BUTTON_FONT, command=search_password)
 searchpassword_button.grid(row=2, column=3, sticky="W")
 
 # "Add" button
-addpassword_button = tkinter.Button(text="Add", width=36, font=BUTTON_FONT, command=addpassword_button_click)
+addpassword_button = tkinter.Button(text="Add", width=36, font=BUTTON_FONT, command=save_password)
 addpassword_button.grid(row=5, column=2, columnspan=2, sticky="W", pady=20)
 
 # Exit GUI window
