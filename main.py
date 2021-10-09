@@ -1,12 +1,12 @@
 import tkinter
 from tkinter import messagebox
 import random
+import json
 
 LABEL_FONT = ("Arial", 12)
 BUTTON_FONT = ("Arial", 10)
 ENTRY_FONT = ("Arial", 10)
-PASSWORDFILE_PATH = "./passwords.txt"
-PASSWORDFILE_SEPARATOR = " | "
+PASSWORDFILE_PATH = "./passwords.json"
 
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
@@ -38,6 +38,7 @@ def generate_password():
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def addpassword_button_click():
+    # Retrieve user input
     website = website_entry.get()
     username = username_entry.get()
     password = password_entry.get()
@@ -51,9 +52,28 @@ def addpassword_button_click():
         else:
             password_entry.focus()
         return
-    # Save the password
-    with open(PASSWORDFILE_PATH, mode="a") as file:
-        file.write(f"{website} | {username} | {password}\n")
+    # Format the new data
+    new_data = {
+        website: {
+            "username": username,
+            "password": password,
+        }
+    }
+    # Try to open the data file
+    try:
+        with open(PASSWORDFILE_PATH, mode="r") as data_file:
+            pass
+    # If no file exists, create a new file and save the data to it
+    except FileNotFoundError:
+        with open(PASSWORDFILE_PATH, mode="w") as data_file:
+            json.dump(new_data, data_file, indent=4)
+    # Otherwise, update and save the data
+    else:
+        with open(PASSWORDFILE_PATH, mode="r") as data_file:
+            data = json.load(data_file)
+            data.update(new_data)
+        with open(PASSWORDFILE_PATH, mode="w") as data_file:
+            json.dump(data, data_file, indent=4)
     # Clear userinput interface
     website_entry.delete(0, tkinter.END)
     password_entry.delete(0, tkinter.END)
