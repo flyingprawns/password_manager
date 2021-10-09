@@ -103,21 +103,25 @@ password_label = tkinter.Label(text="Password: ", font=LABEL_FONT)
 password_label.grid(row=4, column=1)
 
 # Website Entry
-website_entry = tkinter.Entry(width=42, font=ENTRY_FONT)
+website_entry = tkinter.Entry(width=33, font=ENTRY_FONT)
 website_entry.focus()
 website_entry.grid(row=2, column=2, columnspan=2, sticky="W", pady=2)
 
 # Username/Email Entry
-username_entry = tkinter.Entry(width=42, font=ENTRY_FONT)
-username_entry.grid(row=3, column=2, columnspan=2, sticky="W", pady=2)
+username_entry = tkinter.Entry(width=33, font=ENTRY_FONT)
+username_entry.grid(row=3, column=2, columnspan=2, sticky="W", pady=5)
 
 # Password Entry
-password_entry = tkinter.Entry(width=28, font=ENTRY_FONT)
+password_entry = tkinter.Entry(width=33, font=ENTRY_FONT)
 password_entry.grid(row=4, column=2, sticky="W", pady=2)
 
 # "Generate Password" button
 generatepassword_button = tkinter.Button(text="Generate Password", font=BUTTON_FONT, command=generate_password)
-generatepassword_button.grid(row=4, column=3)
+generatepassword_button.grid(row=4, column=3, sticky="W")
+
+# "Search for password" button
+searchpassword_button = tkinter.Button(text="Search for password", font=BUTTON_FONT)
+searchpassword_button.grid(row=2, column=3, sticky="W")
 
 # "Add" button
 addpassword_button = tkinter.Button(text="Add", width=36, font=BUTTON_FONT, command=addpassword_button_click)
